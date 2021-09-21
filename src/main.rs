@@ -52,5 +52,10 @@ fn main() {
     chain.link_after(json_content_middleware);
     chain.link_after(logger_after);
 
-    Iron::new(chain).http("localhost:8000");
+    let res = Iron::new(chain).http("0.0.0.0:8000");
+    let _ = match res {
+        Ok(x) => x,
+        Err(error) => panic!("problem starting the server: {:?}", error),
+    };
+   
 }

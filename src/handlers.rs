@@ -4,7 +4,6 @@ use crate::models::Post;
 use iron::headers::ContentType;
 use iron::{status, AfterMiddleware, Handler, IronResult, Request, Response};
 use router::Router;
-use std::error::Error;
 use std::io::Read;
 use std::sync::{Arc, Mutex};
 use uuid::Uuid;
@@ -104,7 +103,7 @@ impl Handler for Resp503{
         if tmp%2 == 0 {
             Ok(Response::with((status::Ok, String::from("try again for 503"))))
         } else {
-            Ok(Response::with((status::ServiceUnavailable)))
+            Ok(Response::with(status::ServiceUnavailable))
         }
     }
 }
