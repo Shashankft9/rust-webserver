@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver-utility
+  labels:
+    app: webserver-utility
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webserver-utility
+  template:
+    metadata:
+      labels:
+        app: webserver-utility
+    spec:
+      containers:
+      - image: shashankft/rust-webserver:v1
+        imagePullPolicy: Always
+        name: webserver-utility
+        ports:
+        - containerPort: 8000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webserver-utility
+  labels:
+    app: webserver-utility
+spec:
+  ports:
+    - port: 8000
+  selector:
+    app: webserver-utility
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: webserver-utility-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http-webserver-utility
+      protocol: HTTP
+    hosts:
+    - webserver-utility.chennaidev-26.tatacommunications.com
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: webserver-utility
+spec:
+  hosts:
+  - "webserver-utility.chennaidev-26.tatacommunications.com"
+  gateways:
+  - webserver-utility-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        port:
+          number: 8000
+        host: webserver-utility.default.svc.cluster.local
+

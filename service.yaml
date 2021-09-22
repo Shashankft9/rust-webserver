@@ -1,0 +1,18 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: rust-webserver
+  namespace: serverless
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/window: "180s"
+        autoscaling.knative.dev/metric: "rps"
+        autoscaling.knative.dev/target: "100"
+    spec:
+      containers:
+        - image: shashankft/rust-webserver:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
