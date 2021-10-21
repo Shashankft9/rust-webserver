@@ -15,6 +15,7 @@ spec:
         app: webserver-utility
     spec:
       containers:
+#      - image: shashankft/rust-check
       - image: shashankft/rust-webserver:v1
         imagePullPolicy: Always
         name: webserver-utility

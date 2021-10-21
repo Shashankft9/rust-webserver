@@ -1,0 +1,1 @@
+pack build docker.io/shashankft/rust-check -b docker.io/paketocommunity/rust -B gcr.io/paketo-buildpacks/builder:base --network=host --trust-builder --publish
