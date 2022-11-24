@@ -1,0 +1,25 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: check
+  namespace: istio-system
+spec:
+  action: DENY
+  rules:
+  - to:
+#    - operation:
+#        paths: ["/headers"]
+    - operation:
+#        hosts:
+#        - "webserver-utility.chennaidev-26.tatacommunications.com"
+        ports: 
+        - "7301"
+    from:
+    - source:
+        ipBlocks: ["100.65.159.48"]
+#    when:
+#    - key: request.headers[Host]
+#      values: ["webserver-utility.chennaidev-26.tatacommunications.com"]
+  selector:
+    matchLabels:
+      istio: ingressgateway
